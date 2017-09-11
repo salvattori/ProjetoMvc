@@ -8,12 +8,14 @@ public class BuscaCliente implements Busca {
     private Model model;
 
     public BuscaCliente(View o, Subject s){
-        view = o;
-        model = (Model) s;
+        this.view = o;
+        this.model = (Model) s;
     }
 
 
     public void buscar() {
-        view.displayCliente();
+        model.searchCliente(Cliente cliente);
     }
+
+
 }

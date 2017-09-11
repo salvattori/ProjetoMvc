@@ -9,74 +9,57 @@ import view.Observer;
  * Created by rosalina on 14/08/2017.
  */
 public class Model implements Subject {
-    private List<Observer> observers;
-    private List<Cliente> clietes;
-    private List<Fornecedor> fornecedores;
+    private List<Observer> observerList;
+    private List<Cliente> clienteList;
+    private List<Fornecedor> fornecedorList;
+    private static Model uniqueInstance;
 
-
-    public Model(){
-        observers = new LinkedList<>();
-        clietes = new LinkedList();
-        fornecedores = new LinkedList();
+    public static Model getInstance(){
+        if(uniqueInstance == null){
+            uniqueInstance = new Model();
+        }
+    }
+    private Model(){
+        observerList = new LinkedList<>();
+        clienteList = new LinkedList();
+        fornecedorList = new LinkedList();
     }
 
     public void registerObserver(view.Observer o) {
-        observers.add(o);
+        observerList.add(o);
     }
-
-    public void removeObserver(view.Observer o) {
-        observers.remove(o);
-
-    }
-
-    public void notifyObserversAddCliente() {
-        for(Object i:observers){
+    public void removeObserver(view.Observer o) { observerList.remove(o); }
+    public void notifyObservers(List matchingClientes) {
+        for(Object i: observerList){
             Observer ob =(Observer)i;
-            ob.update("Cliente Cadastrado");
-        }
-
-    }
-    public void notifyObserversAddFornecedor() {
-        for(Object i:observers){
-            Observer ob =(Observer)i;
-            ob.update("Fornecedor Cadastrado");
+            ob.updateSearchCliente(matchingClientes);
         }
 
     }
 
-    public void notifyObserversSearch(List result) {
-        for(Object i:observers){
-            Observer obs = (Observer)i;
-            obs.update(result);
-        }
-    }
+    public void addCliente(Cliente cliente){this.clienteList.add(cliente);}
+    public void addFornecedor(Fornecedor fornecedor){this.fornecedorList.add(fornecedor);}
 
-    public void addCliente(String name, int age, String email, ClienteDetail clienteDetail){
-        Cliente cliente = new Cliente(name, age, email, clienteDetail);
-        clietes.add(cliente);
-        notifyObserversAddCliente();
-    }
-    public void addFornecedor(String name, int age, String email, FornecedorDetail FornecedorDetail){
-        Fornecedor fornecedor = new Fornecedor(name, age, email, FornecedorDetail);
-        fornecedores.add(fornecedor);
-        notifyObserversAddFornecedor();
-    }
-    public void searchCliente(ClienteDetail searchClienteDetail){
-        List matchingClientes = new LinkedList();
-        for(Iterator i = clietes.iterator(); i.hasNext(); ){
-            Cliente cliente = (Cliente)i.next();
-            if(cliente.getClienteDetail().matches(searchClienteDetail))
+    public void searchCliente(Cliente cliente){
+        List<Cliente> matchingClientes = new LinkedList<>();
+        for(Cliente i : clienteList){
+            Cliente clientesCadastrados = i;
+            if(cliente.getName().equals(cliente)){
                 matchingClientes.add(cliente);
+            }
+
         }
-        notifyObserversSearch(matchingClientes);
+        notifyObservers(matchingClientes);
     }
-    public void searchFornecedor(FornecedorDetail searchFornecedorDetail){
-        List matchingFornecedores = new LinkedList();
-        for(Iterator i = fornecedores.iterator(); i.hasNext(); ){
-            Fornecedor fornecedor = (Fornecedor) i.next();
-            if(fornecedor.getFornecedordetail().matches(searchFornecedorDetail))
+    public void searchFornecedor(Fornecedor fornecedor){
+        List<Fornecedor> matchingFornecedores = new LinkedList<>();
+        for(Fornecedor i : fornecedorList){
+            Fornecedor fornecedoresCadastrados = i;
+            if(fornecedoresCadastrados.equals(fornecedor)){
                 matchingFornecedores.add(fornecedor);
+            }
+
         }
-        notifyObserversSearch(matchingFornecedores);
+        notifyObservers(matchingFornecedores);
     }
 }

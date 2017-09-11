@@ -7,13 +7,13 @@ public class Fornecedor {
     private String name;
     private int age;
     private String email;
-    private FornecedorDetail FornecedorDetail;
+    //private FornecedorDetail FornecedorDetail;
 
-    public Fornecedor(String name, int age, String email, FornecedorDetail FornecedorDetail) {
+    public Fornecedor(String name, int age, String email/*, FornecedorDetail FornecedorDetail*/) {
         this.name = name;
         this.age = age;
         this.email = email;
-        this.FornecedorDetail = FornecedorDetail;
+        //this.FornecedorDetail = FornecedorDetail;
     }
 
     public String getName() {
@@ -28,9 +28,9 @@ public class Fornecedor {
         return email;
     }
 
-    public FornecedorDetail getFornecedordetail() {
+    /*public FornecedorDetail getFornecedordetail() {
         return FornecedorDetail;
-    }
+    }*/
 
 
 }
